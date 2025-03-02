@@ -7,6 +7,9 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestRegressor, BaggingClassifier, AdaBoostClassifier
 import joblib
 
+import assistant_backend.openai_assistant as assistant
+
+
 # Load the trained models
 best_bagging: BaggingClassifier = joblib.load("../exports/grid_search_bagging.pkl")
 best_boosting: AdaBoostClassifier = joblib.load("../exports/grid_search_boosting.pkl")
@@ -41,7 +44,7 @@ def predict(age: int, wc: int, sod: int, bp: int, sc: int, bgr: int, pot: int) -
     data['gfr'] = data.apply(lambda row: calculate_gfr(row['age'], sc), axis=1)
     data[['sc', 'bgr', 'pot']] = [sc, bgr, pot] 
 
-    print(data)
+    print(data, steps := assistant.retrieve_suggestions(data, age, wc, sod, bp, data['gfr'], sc, bgr, pot))
 
 
     # Predict using the trained models
@@ -49,4 +52,4 @@ def predict(age: int, wc: int, sod: int, bp: int, sc: int, bgr: int, pot: int) -
     boosting_prediction = best_boosting.predict(data)
 
     # Return the predictions
-    return f"CKD Stage Bagging prediction: Stage {bagging_prediction[0]}, CKD Stage Boosting prediction: Stage {boosting_prediction[0]}"
+    return f"CKD Stage Bagging prediction: Stage {bagging_prediction[0]}, CKD Stage Boosting prediction: Stage {boosting_prediction[0]}, \n\n Suggested steps: \n {steps}"
