@@ -24,7 +24,7 @@ def calculate_gfr(age, sc):
     # Example GFR calculation formula (modify as needed)
     return 186 * (sc ** -1.154) * (age ** -0.203) * 1.212  # Example using MDRD equation for African American males
 
-def predict(age: int, wc: int, sod: int, bp: int, sc: int) -> str:
+def predict(age: int, wc: int, sod: int, bp: int, sc: int, bgr: int, pot: int) -> str:
     # Create a DataFrame with the input data
     # Sample data
     data = pd.DataFrame({
@@ -39,7 +39,8 @@ def predict(age: int, wc: int, sod: int, bp: int, sc: int) -> str:
 
     # Apply the GFR calculation to each row
     data['gfr'] = data.apply(lambda row: calculate_gfr(row['age'], sc), axis=1)
-    data['sc'] = [sc]
+    data[['sc', 'bgr', 'pot']] = [sc, bgr, pot] 
+
     print(data)
 
 

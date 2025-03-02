@@ -2,10 +2,10 @@ import streamlit as st
 import ml_trained
 
 # Define a callback function to process the form data
-def process_form_data(age, wc, sod, bp, sc):
+def process_form_data(age, wc, sod, bp, sc, bgr, pot):
     # Perform some processing with the input data
     # For example, you can calculate some metrics or make predictions
-    result = ml_trained.predict(age, wc, sod, bp, sc)
+    result = ml_trained.predict(age, wc, sod, bp, sc, bgr, pot)
     return result
 
 # Create a form
@@ -24,12 +24,16 @@ with st.form("ckd_form"):
 
     sc = st.number_input("Serum Ccreatinine", min_value=0, max_value=10000, value=0, step=1)
 
+    bgr = st.number_input("Blood Glucose Random", min_value=0, max_value=10000, value=0, step=1)
+
+    pot = st.number_input("Potassium", min_value=0, max_value=10000, value=0, step=1)
+
     # create a button to submit the form
     submit = st.form_submit_button("Submit")
 
 # if the form is submitted, process the data and display the results
 if submit:
-    result = process_form_data(age, wc, sod, bp, sc)
+    result = process_form_data(age, wc, sod, bp, sc, bgr, pot)
     st.write(result)
 else:
     st.write("Form not submitted")
