@@ -29,7 +29,8 @@ def calculate_gfr(age, sc):
 
 def predict(age: int, wc: int, sod: int, bp: int, sc: int, bgr: int, pot: int) -> str:
     # Create a DataFrame with the input data
-    # Sample data
+    # Sample data   93  
+
     data = pd.DataFrame({
         "age": [age],
         "wc": [wc],
